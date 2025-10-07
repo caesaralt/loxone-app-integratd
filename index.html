@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan2Board – Loxone Plan Analyzer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Plan2Board – Loxone Plan Analyzer</h1>
+    <p>Upload a floor‑plan PDF and this tool will analyse the rooms, apply your
+       Loxone defaults and produce a bill of materials and draft I/O mapping.</p>
+  </header>
+  <main>
+    <input type="file" id="pdfFile" accept="application/pdf">
+    <div id="loading" style="display:none;">Processing …</div>
+    <div id="results"></div>
+  </main>
+  <!-- Pull in PDF.js from a CDN.  If you host this privately you can pin a version. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

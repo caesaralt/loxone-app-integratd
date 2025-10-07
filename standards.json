@@ -1,0 +1,74 @@
+{
+  "kitchen": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 2,
+    "relay_channels": 0,
+    "blind_actuators": 1,
+    "leak_sensors": 1,
+    "temperature_sensors": 1
+  },
+  "bedroom": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 1,
+    "relay_channels": 0,
+    "blind_actuators": 1,
+    "leak_sensors": 0,
+    "temperature_sensors": 1
+  },
+  "living": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 2,
+    "relay_channels": 0,
+    "blind_actuators": 1,
+    "leak_sensors": 0,
+    "temperature_sensors": 1
+  },
+  "bathroom": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 1,
+    "relay_channels": 1,
+    "blind_actuators": 0,
+    "leak_sensors": 1,
+    "temperature_sensors": 1
+  },
+  "dining": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 1,
+    "relay_channels": 0,
+    "blind_actuators": 1,
+    "leak_sensors": 0,
+    "temperature_sensors": 1
+  },
+  "office": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 2,
+    "relay_channels": 0,
+    "blind_actuators": 1,
+    "leak_sensors": 0,
+    "temperature_sensors": 1
+  },
+  "laundry": {
+    "touch_switches": 1,
+    "presence_sensors": 1,
+    "dimmer_channels": 0,
+    "relay_channels": 1,
+    "blind_actuators": 0,
+    "leak_sensors": 1,
+    "temperature_sensors": 0
+  },
+  "hallway": {
+    "touch_switches": 0,
+    "presence_sensors": 1,
+    "dimmer_channels": 1,
+    "relay_channels": 0,
+    "blind_actuators": 0,
+    "leak_sensors": 0,
+    "temperature_sensors": 0
+  }
+}
