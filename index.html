@@ -13,7 +13,18 @@
        Loxone defaults and produce a bill of materials and draft I/O mapping.</p>
   </header>
   <main>
-    <input type="file" id="pdfFile" accept="application/pdf">
+    <div style="margin-bottom:0.5rem;">
+      <input type="file" id="pdfFile" accept="application/pdf">
+      <!-- Dropdown to select which automation categories to include -->
+      <label for="automationType" style="margin-left:0.5rem;">Automation:</label>
+      <select id="automationType" multiple size="5" style="max-width: 200px;">
+        <option value="lighting" selected>Lighting</option>
+        <option value="shading">Shading</option>
+        <option value="climate">Climate control</option>
+        <option value="security">Security</option>
+        <option value="music">Music</option>
+      </select>
+    </div>
     <div id="loading" style="display:none;">Processing …</div>
     <!-- Canvas container for rendering the uploaded plan and overlaying device icons -->
     <div id="canvas-container" style="display:none; text-align:center; margin-bottom:1.5rem;">

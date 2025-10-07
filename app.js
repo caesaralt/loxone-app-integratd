@@ -27,6 +27,18 @@ const ROOM_PATTERNS = [
   /hallway/gi
 ];
 
+// Mapping of high‑level automation categories to the underlying device keys.  If
+// multiple categories are selected, the union of all associated device keys
+// determines which devices are included in the project.  Categories not
+// explicitly listed here will simply be ignored.
+const CATEGORY_DEVICE_KEYS = {
+  lighting: ['touch_switches', 'presence_sensors', 'dimmer_channels', 'relay_channels'],
+  shading: ['blind_actuators'],
+  climate: ['temperature_sensors'],
+  security: ['presence_sensors', 'leak_sensors'],
+  music: [] // music automation not currently implemented
+};
+
 // Utility to create and download a CSV file in the browser
 function downloadCSV(filename, csvContent) {
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -81,7 +93,23 @@ document.getElementById('pdfFile').addEventListener('change', async (e) => {
         roomCounts[name]++;
       }
     });
-    // Build device summary per room name (enumerated) using the loaded standards
+    // Determine which automation categories have been selected.  If none are
+    // selected, include all device types.  A selected category activates all
+    // corresponding device keys as defined in CATEGORY_DEVICE_KEYS.
+    const categorySelect = document.getElementById('automationType');
+    const selectedCats = Array.from(categorySelect?.selectedOptions || []).map((opt) => opt.value);
+    let allowedKeySet = null;
+    if (selectedCats.length > 0) {
+      allowedKeySet = new Set();
+      selectedCats.forEach((cat) => {
+        const keys = CATEGORY_DEVICE_KEYS[cat] || [];
+        keys.forEach((k) => allowedKeySet.add(k));
+      });
+    }
+    // Build device summary per room name (enumerated) using the loaded standards,
+    // filtered by the selected categories.  If a device key is not in the
+    // allowedKeySet (when defined), its count is set to zero.  This enables
+    // selective automation based on user choice.
     const deviceSummary = {};
     Object.keys(roomCounts).forEach((roomKey) => {
       const count = roomCounts[roomKey];
@@ -90,7 +118,16 @@ document.getElementById('pdfFile').addEventListener('change', async (e) => {
           const roomName = `${roomKey.charAt(0).toUpperCase() + roomKey.slice(1)} ${
             count > 1 ? i + 1 : ''
           }`.trim();
-          deviceSummary[roomName] = standards[roomKey];
+          const defs = standards[roomKey];
+          const filteredDefs = {};
+          Object.keys(defs).forEach((k) => {
+            if (!allowedKeySet || allowedKeySet.has(k)) {
+              filteredDefs[k] = defs[k];
+            } else {
+              filteredDefs[k] = 0;
+            }
+          });
+          deviceSummary[roomName] = filteredDefs;
         }
       }
     });
@@ -289,13 +326,20 @@ document.getElementById('pdfFile').addEventListener('change', async (e) => {
       ctx.textBaseline = 'middle';
       ctx.fillText(label, cx, cy);
     }
-    // Overlay icons for each detected room position
+    // Overlay icons for each detected room position.  Respect the user‑selected
+    // automation categories by skipping device types not present in
+    // allowedKeySet (when defined).  Each icon corresponds to one instance
+    // of the device in that room as defined in the filtered standards.
     positions.forEach((pos) => {
       const defs = standards[pos.roomKey];
       if (!defs) return;
       let offsetX = pos.x + 10; // start offset to the right of the room label
       const offsetY = pos.y - 10; // slightly above the baseline
       Object.keys(iconDefs).forEach((key) => {
+        // Only draw icons for device types included in the allowed set (if
+        // defined); otherwise skip this key.  Without any selection all keys
+        // are allowed by default.
+        if (allowedKeySet && !allowedKeySet.has(key)) return;
         const count = defs[key];
         if (count && count > 0) {
           const { label, color } = iconDefs[key];
