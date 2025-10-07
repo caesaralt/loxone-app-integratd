@@ -19,9 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5   # <-- this is the missing step
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: .                           # deploy the repo root
+
   deploy:
     environment:
       name: github-pages
